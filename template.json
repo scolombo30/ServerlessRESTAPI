@@ -1,0 +1,197 @@
+{
+	"AWSTemplateFormatVersion":"2010-09-09",
+	"Description":"Template create by CloudKast",
+	"Resources":{
+		"tabellaDyanmo":{
+			"Properties":{
+				"AttributeDefinitions":[{
+					"AttributeName":"userId",
+					"AttributeType":"N"}],
+				"BillingMode":"PAY_PER_REQUEST",
+				"KeySchema":[{
+					"AttributeName":"userId",
+					"KeyType":"HASH"}],
+				"TableName":"usersprova"
+				},
+			"Type":"AWS::DynamoDB::Table"},
+		"lambda":{
+			"Properties":{
+					"FunctionName":"lambdaEs1",
+					"Handler":"index.handler",
+					"MemorySize":"512",
+					"Code":{
+						"S3Bucket":"il-bucket-di-sebastian",
+						"S3Key":"index.zip"
+					},
+					"Role":{
+						"Fn::GetAtt":["LambdaExecutionRole","Arn"]
+					},
+					"Runtime":"nodejs16.x",
+					"Timeout":"15"
+			},
+			"Type":"AWS::Lambda::Function"
+		},
+		"LambdaExecutionRole":{
+			"Properties":{
+				"AssumeRolePolicyDocument":{
+					"Version":"2012-10-17",
+					"Statement":[{
+						"Effect":"Allow",
+						"Principal":{
+							"Service":[
+							"lambda.amazonaws.com"
+							]},
+						"Action":["sts:AssumeRole"]}]
+				},
+				"Path":"/",
+				"Policies":[{
+					"PolicyName":"root",
+					"PolicyDocument":{
+						"Version":"2012-10-17",
+						"Statement":[{
+								"Effect":"Allow",
+								"Action":["logs:*"],
+								"Resource":"arn:aws:logs:*:*:*"
+							},
+							{
+								"Effect": "Allow",
+								"Action": ["dynamodb:Scan", "dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:DeleteItem", "dynamodb:Query", "dynamodb:UpdateItem"],
+								"Resource":{
+									"Fn::GetAtt":["tabellaDyanmo","Arn"]
+								}
+							}]
+						}
+					}]
+			},
+			"Type":"AWS::IAM::Role"
+		},
+		"RestApi": {
+			"Type": "AWS::ApiGateway::RestApi",
+			"Properties": {
+				"EndpointConfiguration": {
+					"Types": [
+						"REGIONAL"
+					]
+				},
+				"Name": "ProvaApi"
+			}
+		},
+		"UsersResource": {
+			"Type": "AWS::ApiGateway::Resource",
+			"Properties": {
+				"ParentId": {"Fn::GetAtt": ["RestApi", "RootResourceId"]},
+				"PathPart": "users",
+				"RestApiId": {"Ref": "RestApi"}
+			}
+		},
+		"UserResource": {
+			"Type": "AWS::ApiGateway::Resource",
+			"Properties": {
+			"RestApiId": {"Ref": "RestApi"},
+			"ParentId": {"Ref": "UsersResource"},
+			"PathPart": "{userId}"
+			}
+		},
+		"FriendshipResource": {
+			"Type": "AWS::ApiGateway::Resource",
+			"Properties": {
+				"ParentId": {"Fn::GetAtt": ["RestApi", "RootResourceId"]},
+				"PathPart": "calculatefriendship",
+				"RestApiId": {"Ref": "RestApi"}
+			}
+		},
+		"GetUsers": {
+			"Type": "AWS::ApiGateway::Method",
+			"Properties": {
+			  "AuthorizationType": "NONE",
+			  "HttpMethod": "GET",
+			  "Integration": {
+				"ConnectionType": "INTERNET",
+				"IntegrationHttpMethod": "POST",
+				"Type": "AWS_PROXY",
+				"Uri": {"Fn::Join" : ["", ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, ":lambda:path/2015-03-31/functions/", {"Fn::GetAtt":["lambda","Arn"]}, "/invocations"]]}
+			  },
+			  "ResourceId": {"Ref": "UsersResource"},
+			  "RestApiId": {"Ref": "RestApi"}
+			}
+		},
+		"GetUser": {
+			"Type": "AWS::ApiGateway::Method",
+			"Properties": {
+			  "AuthorizationType": "NONE",
+			  "HttpMethod": "GET",
+			  "Integration": {
+				"ConnectionType": "INTERNET",
+				"IntegrationHttpMethod": "POST",
+				"Type": "AWS_PROXY",
+				"Uri": {"Fn::Join" : ["", ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, ":lambda:path/2015-03-31/functions/", {"Fn::GetAtt":["lambda","Arn"]}, "/invocations"]]}
+			  },
+			  "ResourceId": {"Ref": "UserResource"},
+			  "RestApiId": {"Ref": "RestApi"}
+			}
+		},
+		"PostUsers": {
+			"Type": "AWS::ApiGateway::Method",
+			"Properties": {
+			  "AuthorizationType": "NONE",
+			  "HttpMethod": "POST",
+			  "Integration": {
+				"ConnectionType": "INTERNET",
+				"IntegrationHttpMethod": "POST",
+				"Type": "AWS_PROXY",
+				"Uri": {"Fn::Join" : ["", ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, ":lambda:path/2015-03-31/functions/", {"Fn::GetAtt":["lambda","Arn"]}, "/invocations"]]}
+			  },
+			  "ResourceId": {"Ref": "UsersResource"},
+			  "RestApiId": {"Ref": "RestApi"}
+			}
+		},
+		"DeleteUser": {
+			"Type": "AWS::ApiGateway::Method",
+			"Properties": {
+			  "AuthorizationType": "NONE",
+			  "HttpMethod": "DELETE",
+			  "Integration": {
+				"ConnectionType": "INTERNET",
+				"IntegrationHttpMethod": "POST",
+				"Type": "AWS_PROXY",
+				"Uri": {"Fn::Join" : ["", ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, ":lambda:path/2015-03-31/functions/", {"Fn::GetAtt":["lambda","Arn"]}, "/invocations"]]}
+			  },
+			  "ResourceId": {"Ref": "UserResource"},
+			  "RestApiId": {"Ref": "RestApi"}
+			}
+		},
+		"CalculateFriendship": {
+			"Type": "AWS::ApiGateway::Method",
+			"Properties": {
+			  "AuthorizationType": "NONE",
+			  "HttpMethod": "GET",
+			  "Integration": {
+				"ConnectionType": "INTERNET",
+				"IntegrationHttpMethod": "POST",
+				"Type": "AWS_PROXY",
+				"Uri": {"Fn::Join" : ["", ["arn:aws:apigateway:", {"Ref": "AWS::Region"}, ":lambda:path/2015-03-31/functions/", {"Fn::GetAtt":["lambda","Arn"]}, "/invocations"]]}
+			  },
+			  "ResourceId": {"Ref": "FriendshipResource"},
+			  "RestApiId": {"Ref": "RestApi"}
+			}
+		},
+		"Deployment": {
+			"Type": "AWS::ApiGateway::Deployment",
+			"DependsOn": [
+			  "GetUsers","PostUsers", "DeleteUser", "CalculateFriendship"
+			],
+			"Properties": {
+			  "RestApiId": {"Ref": "RestApi"}
+			}
+		},
+		"Stage": {
+			"Type": "AWS::ApiGateway::Stage",
+			"Properties": {
+			  "DeploymentId": {"Ref": "Deployment"},
+			  "RestApiId": {"Ref": "RestApi"},
+			  "StageName": "DEV"
+			}
+		}
+		
+	}
+}

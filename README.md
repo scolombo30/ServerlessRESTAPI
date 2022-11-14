@@ -1,5 +1,5 @@
 # Serverless REST API
-##These two files are used to create a serverless REST API using AWS Cloudformation
+## These two files are used to create a serverless REST API using AWS Cloudformation
 
 The index.js file is the code that the Lambda will execute when the endpoints defined in the API Gateaway are called.
 

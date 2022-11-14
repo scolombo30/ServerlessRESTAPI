@@ -18,7 +18,10 @@ To create this project:
 2. Login to aws, create an S3Bucket and upload the zip file.
 3. Open the template.json and where there is the Code property in the lambda resource, sobstitutes the bucket name and the key name with the one you used in the previous step.
 ```
-code
+"Code":{
+						"S3Bucket":"YOUR BUCKET NAME",
+						"S3Key":"YOUR ZIP FILE NAME"
+					},
 ```
 4. Go to Cloudformation, create a stack with new resources, and upload the template file.
 5. Give the stack a name and continue 'till the end of the setup.

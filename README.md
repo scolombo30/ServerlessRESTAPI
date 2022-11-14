@@ -34,7 +34,10 @@ aws s3 cp <path-to-file> s3://<bucket-name>
 	"S3Key":"YOUR ZIP FILE NAME"
 },
 ```
-4. Go to Cloudformation, create a stack with new resources, and upload the template file.
-5. Give the stack a name and continue 'till the end of the setup.
-6. Wait untill aws has created all the resources.
-7. Enjoy! You may now call the endpoints of the APIs
+4. Use the following command to create the stack
+```
+aws cloudformation create-stack --stack-name <stack-name> --template-body file://<template-name>
+```
+N.B. If the command gives you errors, try using the aws site to create the stack
+5. Wait untill aws has created all the resources.
+6. Enjoy! You may now call the endpoints of the APIs

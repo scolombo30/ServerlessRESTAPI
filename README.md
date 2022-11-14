@@ -23,7 +23,7 @@ Compress-Archive .\index.js index.zip
 ```
 aws s3api create-bucket --bucket <bucket-name>
 ```
-and upload the zip file.
+and upload the zip file.(Better to upload it via the website. If uploaded with CLI can generate an error *Unable to unzip file* while creating the stack)
 ```
 aws s3 cp <path-to-file> s3://<bucket-name>
 ```
@@ -38,6 +38,6 @@ aws s3 cp <path-to-file> s3://<bucket-name>
 ```
 aws cloudformation create-stack --stack-name <stack-name> --template-body file://<template-name>
 ```
-N.B. If the command gives you errors, try using the aws site to create the stack
+N.B. If the command gives you errors, try using the aws site to create the stack.
 5. Wait untill aws has created all the resources.
 6. Enjoy! You may now call the endpoints of the APIs

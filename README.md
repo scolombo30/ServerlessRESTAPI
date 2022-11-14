@@ -15,7 +15,14 @@ The ttemplate.json file contains all the aws resources and their configuration, 
 
 To create this project:  
 1. Download the index.js file and zip it.
-2. Login to aws, create an S3Bucket and upload the zip file.
+2. Create an S3Bucket.
+```
+aws s3api create-bucket --bucket <bucket-name>
+```
+and upload the zip file.
+```
+aws s3 cp <path-to-file> <bucket-name>
+```
 3. Open the template.json and where there is the Code property in the lambda resource, sobstitutes the bucket name and the key name with the one you used in the previous step.
 ```
 "Code":{

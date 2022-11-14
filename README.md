@@ -4,14 +4,14 @@
 The index.js file is the code that the Lambda will execute when the endpoints defined in the API Gateaway are called.  
 
 The ttemplate.json file contains all the aws resources and their configuration, that will be generated once the stack is created. The template specifies:  
--A dynamo table
--A lambda
--An execution role for the lambda to grant read and write acces to it
--A REST API
--3 Resources(Users, user, friendship)
--5 http methods
--A deployment
--A stage
+- A dynamo table
+- A lambda
+- An execution role for the lambda to grant read and write acces to it
+- A REST API
+- 3 Resources(Users, user, friendship)
+- 5 http methods
+- A deployment
+- A stage
 
 To create this project:  
 1. Download the index.js file and zip it.

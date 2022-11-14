@@ -39,5 +39,6 @@ aws s3 cp <path-to-file> s3://<bucket-name>
 aws cloudformation create-stack --stack-name <stack-name> --template-body file://<template-name> --capabilities CAPABILITY_NAMED_IAM
 ```
 N.B. If the command gives you errors, try using the aws site to create the stack.
+
 5. Wait untill aws has created all the resources.
 6. Enjoy! You may now call the endpoints of the APIs

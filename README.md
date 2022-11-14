@@ -15,6 +15,10 @@ The template.json file contains all the aws resources and their configuration, t
 
 To create this project:  
 1. Download the index.js file and zip it.
+(If you're using Powershell use the following command to zip)
+```
+Compress-Archive .\index.js index.zip
+```
 2. Create an S3Bucket.
 ```
 aws s3api create-bucket --bucket <bucket-name>

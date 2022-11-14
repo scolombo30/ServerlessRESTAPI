@@ -21,7 +21,7 @@ aws s3api create-bucket --bucket <bucket-name>
 ```
 and upload the zip file.
 ```
-aws s3 cp <path-to-file> <bucket-name>
+aws s3 cp <path-to-file> s3://<bucket-name>
 ```
 3. Open the template.json and where there is the Code property in the lambda resource, sobstitutes the bucket name and the key name with the one you used in the previous step.
 ```

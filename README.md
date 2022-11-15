@@ -8,7 +8,7 @@ The template.json file contains all the aws resources and their configuration, t
 - A lambda
 - An execution role for the lambda to grant read and write acces to it
 - A REST API
-- 3 Resources(Users, user, friendship)
+- 3 Resources(users, user, friendship)
 - 5 http methods
 - A deployment
 - A stage

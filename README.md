@@ -30,8 +30,8 @@ aws s3 cp <path-to-file> s3://<bucket-name>
 3. Open the template.json and where there is the Code property in the lambda resource, sobstitutes the bucket name and the key name with the one you used in the previous step.
 ```
 "Code":{
-	"S3Bucket":"YOUR BUCKET NAME",
-	"S3Key":"YOUR ZIP FILE NAME"
+	"S3Bucket":"<YOUR-BUCKET-NAME>",
+	"S3Key":"<YOUR-ZIP-FILE-NAME>"
 },
 ```
 4. Use the following command to create the stack
